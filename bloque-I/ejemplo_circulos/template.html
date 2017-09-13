@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Un pequeño documento</title>
+
+	<style type="text/css">
+		
+		/*Crear estilo*/
+
+	</style>
+
+</head>
+<body>
+  
+  <h2>Goleadores en mundiales</h2>
+  <div id="chart"></div>
+
+  <!-- D3 v3 js para crear el chart -->
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <!-- Tabletop js para cargar data desde un Google Spreadsheet -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+
+  <script type="text/javascript">
+  	
+  	//Aquí va la dirección del spreadsheet
+  	var url = '';
+
+  	//Función de tabletop para traer la data
+  	Tabletop.init( { key: url,
+                     callback: dibujar,
+                     simpleSheet: true,
+                     parseNumbers:true } );
+
+  	//Función propia que recibe la data cuando ya está cargada y podemos dibujar nuestra viz
+  	function dibujar(data){
+  		console.log(data);
+		//Crear viz
+  	}
+
+  </script>
+
+</body>
+</html>
