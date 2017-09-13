@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Intro JS y D3</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+      <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
+  <style type="text/css">
+    img{
+      width: 100%;
+    }
+  </style>
+
+
+  </head>
+  <body>
+    <div class="container">
+
+        <div class="row">
+          <div class="col-md-12">
+            <h1>Actividad: D3 + API <a class="btn btn-primary pull-right" href="../index.html">Volver</a></h1>
+            <hr>
+          </div>
+
+          <div class="col-md-12">
+            <h2>Gráfico De barras</h2>
+            <img class="img-responsive" src="ejemplo_paises/paises-final.gif" />
+            <p>Actividad D3: Dada la información de la  API de países, crear un gráfico con filtro que permita saber el listado y la población de los países que hablan determinado idioma usando d3.js y CSS.</p>
+            
+            <h3>La data</h3>
+            <p>Como podemos ver en la siguiente <a class="btn btn-xs btn-success" href="https://restcountries.eu/#api-endpoints-language" target="_blank">API de países</a>, esto nos permite no tener toda la data nosotros e ir a buscar lo que necesitamos. En este caso filtrando por el lenguaje que hablan los países.</p>
+
+            <p>Esta APi es bastante simple, no requiere key ni autenticación.</p>
+
+            <br/>
+            <p>Template para empezar a trabajar <a class="btn btn-xs btn-success" target="_blank" href="ejemplo_paises/template.html">Ver template</a></p>
+
+<pre><code class="javascript">var margin,width,height;
+var x,y;
+var xAxis,yAxis;
+var svg;
+var color = d3.scale.category10();
+var bandera;
+
+//Inicial la ejecución
+function iniciar(){
+
+}
+
+//Prepara las partes del chart que sólo necesitamos una vez
+function prepararChart(){
+
+}
+
+//Cuando cambia el filtro pedimos la data
+function cambiaFiltro(){
+ 
+}
+
+//Función que recibe la data cuando ya está cargada y podemos dibujar nuestra viz una y otra vez para actualizar.
+function dibujar(data){
+
+}
+
+//Llamo a iniciar para comenzar todo!
+iniciar();
+</code></pre>
+
+<h3>Detectar cambio del filtro e imprimirlo en consola</h3>
+<pre><code class="javascript">function iniciar(){
+  d3.select('#filtro').on('change',cambiaFiltro);
+  cambiaFiltro();
+}</code></pre>
+<pre><code class="javascript">function cambiaFiltro(){
+  var filtro = d3.select('#filtro').property('value');
+  console.log('Cambió al filtro: '+filtro);
+}</code></pre>
+
+<h3>Pedir data cuando cambia el filtro e imprimirla en consola cuando vuelve, con mensaje de "cargando"</h3>
+<pre><code class="javascript">function cambiaFiltro(){
+  var filtro = d3.select('#filtro').property('value');
+  console.log('FILTRO->'+filtro);
+  d3.select('#cargando').style('opacity',1);
+  d3.json("https://restcountries.eu/rest/v2/lang/"+filtro,dibujar);
+}</code></pre>
+<pre><code class="javascript">function dibujar(data){
+  console.log('DATA->',data);
+  d3.select('#cargando').style('opacity',0);
+}
+</code></pre>
+
+<h3>Preparar chart mientras cargo la data inicial</h3>
+<pre><code class="javascript">function iniciar(){
+  d3.select('#filtro').on('change',cambiaFiltro);
+  cambiaFiltro();
+  prepararChart();
+}</code></pre>
+<pre><code class="javascript">function prepararChart(){
+  margin = {top: 20, right: 20, bottom: 100, left: 100};
+  width = 800 - margin.left - margin.right;
+  height = 400 - margin.top - margin.bottom;
+
+  x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+  y = d3.scale.linear().range([height, 0]);
+
+  xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .ticks(10);
+
+  svg = d3.select("#chart").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", 
+            "translate(" + margin.left + "," + margin.top + ")");
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")");
+
+  svg.append("g")
+      .attr("class", "y axis");
+
+}</code></pre>
+
+
+      <h3>Actualizar el chart cada vez que recibo data nueva</h3>
+<pre><code class="javascript">function dibujar(data){
+  console.log('DATA->',data);
+  d3.select('#cargando').style('opacity',0);
+
+  x.domain(data.map(function(d) { return d.name; }));
+  y.domain([0, d3.max(data, function(d) { return d.population; })]);
+
+  svg.select("g.x.axis")
+      .call(xAxis)    
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
+
+  svg.select("g.y.axis")
+      .call(yAxis);
+
+  var barras = svg.selectAll(".bar")
+      .data(data);
+
+  barras.exit().remove();
+
+  barras.enter()
+    .append("rect")
+    .classed("bar",true)
+    .style("fill", function(d){return color(d.region) })
+    .attr("x", function(d) { return x(d.name); })
+    .attr("width", x.rangeBand())
+    .attr("y", function(d) { return y(d.population); })
+    .attr("height", function(d) { return height - y(d.population); })
+  
+  barras
+    .style("fill", function(d){return color(d.region) })
+    .attr("x", function(d) { return x(d.name); })
+    .attr("width", x.rangeBand())
+    .attr("y", function(d) { return y(d.population); })
+    .attr("height", function(d) { return height - y(d.population); });
+
+}</code></pre>
+
+<h3>Agregar interacción en el hover y mostrar información del país seleccionado</h3>
+<pre><code class="javascript">//dentro de function dibujar(data)
+
+barras.enter()
+    .append("rect")
+    .classed("bar",true)
+    .style("fill", function(d){return color(d.region) })
+    .attr("x", function(d) { return x(d.name); })
+    .attr("width", x.rangeBand())
+    .attr("y", function(d) { return y(d.population); })
+    .attr("height", function(d) { return height - y(d.population); })
+    .on("mouseenter", function(d){
+      console.log(d);
+      d3.select('#bandera').attr('src',d.flag);
+      d3.select('#nombre_pais').text(d.name);
+      d3.select('#poblacion').text('Población:'+d.population);
+      d3.select('#continente').text('Continente:'+d.region).style("color",color(d.region));
+    })
+    .on("mouseout", function(d){
+      console.log(d);
+      d3.select('#bandera').attr('src',"");
+      d3.select('#nombre_pais').text("");
+      d3.select('#poblacion').text("");
+      d3.select('#continente').text("");
+    });
+
+</code></pre>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+              <h3>Solución</h3>
+              <p>¿Quedó algo parecido a <a class="btn btn-xs btn-success" target="_blank" href="ejemplo_paises/paises.html">Ver solución</a> ?</p>
+          </div>
+          <div class="col-md-6">
+          </div>
+        </div>
+
+    </div><!-- Container -->
+
+    <hr/>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Pablo H. Paladino - <a href="http://twitter.com/palamago">@palamago</a></p>
+      </div>
+    </footer>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>
+      $(document).ready(function(){
+        hljs.initHighlightingOnLoad();
+      });
+      </script>
+  </body>
+</html>

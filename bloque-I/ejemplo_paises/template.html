@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Un pequeño documento</title>
+
+	<style type="text/css">
+		
+    body{
+      font-family: arial;
+    }
+
+		.axis {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    #data{
+      float: right;
+      width: 200px;
+    }
+
+    #chart{
+      float: left;
+    }
+
+    #filtro-container{
+      display: block;
+    }
+
+	</style>
+
+</head>
+<body>
+  
+  <h2>Países por idioma</h2>
+  
+  <div id="filtro-container">
+    <select id="filtro">
+      <option value="es" selected="selected">Español</option>
+      <option value="en">Inglés</option>
+      <option value="fr">Francés</option>
+      <option value="de">Alemán</option>
+      <option value="it">Italiano</option>
+      <option value="pt">Portugués</option>
+      <option value="ja">Japonés</option>
+      <option value="zh">Chino</option>
+    </select>
+    <span id="cargando">Cargando data, por favor espere...</span>
+  </div>
+  
+  <div id="chart"></div>
+  
+  <div id="data">
+    <p>Detalle del país seleccionado:</p>
+    <h3 id="nombre_pais"></h3>
+    <p id="poblacion"></p>
+    <p id="continente"></p>
+    <img id="bandera" width="100%"/>
+  </div>
+
+  <!-- D3 v3 js para crear el chart -->
+  <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+  	
+    var margin,width,height;
+    var x,y;
+    var xAxis,yAxis;
+    var svg;
+    var color = d3.scale.category10();
+    var bandera;
+
+    //Inicial la ejecución
+    function iniciar(){
+
+    }
+
+    //Prepara las partes del chart que sólo necesitamos una vez
+    function prepararChart(){
+
+    }
+
+    //Cuando cambia el filtro pedimos la data
+    function cambiaFiltro(){
+     
+    }
+
+  	//Función que recibe la data cuando ya está cargada y podemos dibujar nuestra viz una y otra vez para actualizar.
+  	function dibujar(data){
+
+  	}
+
+    //Llamo a iniciar para comenzar todo!
+    iniciar();
+
+  </script>
+
+</body>
+</html>
