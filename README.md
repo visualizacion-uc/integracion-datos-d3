@@ -3,19 +3,19 @@
 
 # Integración datos y D3.js
 
-Ver online: [aquí](http://palamago.github.io/integracion-datos-d3/)
+Ver online: [aquí](https://visualizacionuc.github.io/integracion-datos-d3)
 
-##Contenido
+## Contenido
 
-###Bloque I
+### Bloque I
 
 * Actividad: D3 + Google Spreadsheet
 * Actividad: D3 + API
 
-###Bloque II
+### Bloque II
 
 * Actividad: CartoDB
 * Librerías y herramientas sobre D3
 
-![d3](http://palamago.github.io/intro-js-d3/bloque-I/ejemplo_circulos/scatterplot8.gif)
+![d3](https://visualizacionuc.github.io/integracion-datos-d3/bloque-I/ejemplo_circulos/scatterplot8.gif)
 
