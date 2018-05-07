@@ -63,12 +63,11 @@
         <div class="row">
           <div class="col-md-6">            
             <h3>Datos</h3>
-            <p>Debemos buscar datos que tengan información geográfica: latitud, logitud, shapes, geoJson, KMZ. CartoDB también nos permite georreferenciar usando: direcciones, localidades, países o provincias</p>
+            <p>Debemos buscar datos que tengan información geográfica: latitud, logitud, shapes, geoJson, KMZ. CartoDB también nos permite georreferenciar usando: direcciones, localidades, países y/o provincias</p>
 
             <p>Para la demostración usaremos un dataset de <a href="http://datos.gob.cl/" target="_blank">http://datos.gob.cl/</a> que contiene la ubicación de <a href="http://datos.gob.cl/dataset/farmacias-en-chile/resource/a60f93af-6a8a-45b6-85ff-267f5dd37ad6" target="_blank">todas las farmacias</a> de Chile, con su ubicación en lat/lng y varios datos extra, interesantes.</p>
 
             <p>Los datos de las farmacias están en formato JSON. CartoDB no acepta JSON (a menos que sea geoJson), por lo que debemos convertirlo. Al ser un dataset pequeño, podemos usar <a href="http://konklone.io/json/" target="_blank">este convertidor de JSON a CSV</a>. Para convertir entre formatos y limpiar datasets recomiendo la herramienta <a href="http://openrefine.org/" target="_blank">openRefine</a></p>
-
 
           </div>
           <div class="col-md-6">
@@ -82,9 +81,11 @@
 
         <div class="row">
           <div class="col-md-6">
-            <h3>Actividad</h3>
-            <p>Cargar el CSV a cartoDB como un nuevo dataset e investigar las columnas.</p>
-            <p>Usando SQL, crear mapas que muestren:</p>
+            <h3>Actividad:</h3>
+            <p>1. Cargar el CSV a cartoDB como un nuevo dataset e investigar las columnas. Descargar aquí <a href="../farmacias.csv" target="_blank">Farmacias CSV</a> o <a href="../sismos.csv" target="_blank">Sismos CSV</a></p>
+            <p>2. Convertir las columnas lat/lng a entero y geolocalizar.</p>
+            <p>3. Crear un mapa y explorar alternativas de diseño.</p>
+            <p>4. Usando SQL, crear mapas que muestren:</p>
             <ol>
               <li>Farmacias de región Antofagasta(3).</li>
               <li>Farmacias que abran 8:30 y cierren a las 23:00</li>
